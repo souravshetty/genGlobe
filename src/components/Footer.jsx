@@ -6,15 +6,14 @@ const Footer = () => {
     "Cloud Solutions", 
     "Software Development",
     "Quality Assurance",
-    "Technical Training"
+    
   ];
 
   const companyLinks = [
     "About Us",
     "Why Choose Us", 
-    "Case Studies",
     "Contact",
-    "Careers"
+    
   ];
 
   return (
@@ -64,7 +63,7 @@ const Footer = () => {
 
         {/* Copyright Section */}
         <div className="footer-bottom">
-          <p>© 2024 Genglobe Analytics. All rights reserved. Transforming businesses through AI innovation.</p>
+          <p>© 2025 Genglobe Analytics. All rights reserved. Transforming businesses through AI innovation.</p>
         </div>
       </div>
     </footer>
