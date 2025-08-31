@@ -1,13 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+// Import components
+import { Header, Hero, Features, WhyUs, About, Contact, Footer } from "./components";
+
+// Main App Component
 const App = () => {
-	return (
-		<div style={{ textAlign: "center", padding: "2rem" }}>
-			<h1>Hello React!</h1>
-			<p>This is my static website built with Parcel.</p>
-		</div>
-	);
+  return (
+    <div>
+      <Header />
+      <Hero />
+      <Features />
+      <WhyUs />
+      <About />
+      <Contact />
+      <Footer />
+    </div>
+  );
 };
 
 // Render App into #root
