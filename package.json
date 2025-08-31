@@ -5,6 +5,7 @@
 	"name": "genglobe",
 	"version": "1.0.0",
 	"dependencies": {
+		"@formspree/react": "^3.0.0",
 		"ansi-styles": "^4.3.0",
 		"base-x": "^3.0.11",
 		"braces": "^3.0.3",

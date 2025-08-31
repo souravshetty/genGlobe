@@ -1196,11 +1196,24 @@ body {
   .nav-links {
     display: none;
   }
+    body {
+    padding-top: 100px; /* taller header on mobile */
+  }
+  .nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.3rem 0;
+}
+
+  section {
+    scroll-margin-top: 100px;
+  }
   .logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #333;
   text-decoration: none;
