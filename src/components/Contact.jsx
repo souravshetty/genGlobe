@@ -1,97 +1,118 @@
-import React, { useState, useEffect } from "react";
-import { useForm, ValidationError } from "@formspree/react";
 
-const Contact = () => {
-	const [state, handleSubmit] = useForm("mgvlybja"); // 🔹 Replace with your Formspree ID
-	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
-		message: "",
-	});
+			import React, { useState } from "react";
+			import emailjs from "emailjs-com";
 
-	// Reset fields when form succeeds
-	useEffect(() => {
-		if (state.succeeded) {
-			setFormData({ name: "", email: "", message: "" });
-		}
-	}, [state.succeeded]);
+			const Contact = () => {
+				const [formData, setFormData] = useState({
+					name: "",
+					email: "",
+					message: "",
+				});
+				const [status, setStatus] = useState(""); // message text
+				const [showPopup, setShowPopup] = useState(false); // show/hide popup
 
-	const handleChange = (e) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
-	};
+				const handleChange = (e) => {
+					setFormData({ ...formData, [e.target.name]: e.target.value });
+				};
 
-	return (
-		<section id="contact" className="contact">
-			<div className="container">
-				<h2 className="section-title">Get In Touch</h2>
+				const handleSubmit = (e) => {
+					e.preventDefault();
 
-				{state.succeeded ? (
-					<p className="success-msg">
-						✅ Thanks for your message! We'll get back to you soon.
-					</p>
-				) : (
-					<form onSubmit={handleSubmit} className="contact-form">
-						<div className="form-group">
-							<label htmlFor="name">Name</label>
-							<input
-								id="name"
-								type="text"
-								name="name"
-								value={formData.name}
-								onChange={handleChange}
-								required
-							/>
+					
+		emailjs
+			.send(
+				process.env.REACT_APP_EMAILJS_SERVICE_ID, // service ID
+				process.env.REACT_APP_EMAILJS_TEMPLATE_ID, // template ID
+				formData,
+				process.env.REACT_APP_EMAILJS_PUBLIC_KEY // public key
+			)
+			.then(
+				(result) => {
+					setStatus("✅ Email sent successfully!");
+					setShowPopup(true);
+					setFormData({ name: "", email: "", message: "" });
+
+					setTimeout(() => setShowPopup(false), 3000);
+				},
+				(error) => {
+					setStatus("❌ Failed to send message. Try again later.");
+					setShowPopup(true);
+					setTimeout(() => setShowPopup(false), 3000);
+				}
+			);
+				};
+
+				return (
+					<section id="contact" className="contact">
+						{/* Popup Notification */}
+						{showPopup && (
+							<div
+								style={{
+									position: "fixed",
+									top: "90px",
+									left: "50%",
+									transform: "translateX(-50%)",
+									backgroundColor: status.includes("✅")
+										? "#4caf50"
+										: "#f44336",
+									color: "#fff",
+									padding: "10px 20px",
+									borderRadius: "5px",
+									boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
+									zIndex: 9999,
+								}}
+							>
+								{status}
+							</div>
+						)}
+
+						<div className="container">
+							<h2 className="section-title">Get In Touch</h2>
+
+							<form onSubmit={handleSubmit} className="contact-form">
+								<div className="form-group">
+									<label htmlFor="name">Name</label>
+									<input
+										id="name"
+										type="text"
+										name="name"
+										value={formData.name}
+										onChange={handleChange}
+										required
+									/>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="email">Email</label>
+									<input
+										id="email"
+										type="email"
+										name="email"
+										value={formData.email}
+										onChange={handleChange}
+										required
+									/>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="message">Message</label>
+									<textarea
+										id="message"
+										name="message"
+										rows="5"
+										value={formData.message}
+										onChange={handleChange}
+										required
+									></textarea>
+								</div>
+
+								<button type="submit" className="submit-btn">
+									Send Message
+								</button>
+							</form>
 						</div>
+					</section>
+				);
+			};
 
-						<div className="form-group">
-							<label htmlFor="email">Email</label>
-							<input
-								id="email"
-								type="email"
-								name="email"
-								value={formData.email}
-								onChange={handleChange}
-								required
-							/>
-							<ValidationError
-								prefix="Email"
-								field="email"
-								errors={state.errors}
-							/>
-						</div>
-
-						<div className="form-group">
-							<label htmlFor="message">Message</label>
-							<textarea
-								id="message"
-								name="message"
-								rows="5"
-								value={formData.message}
-								onChange={handleChange}
-								required
-							></textarea>
-							<ValidationError
-								prefix="Message"
-								field="message"
-								errors={state.errors}
-							/>
-						</div>
-
-						<button
-							type="submit"
-							className="submit-btn"
-							disabled={state.submitting}
-						>
-							{state.submitting ? "Sending..." : "Send Message"}
-						</button>
-					</form>
-				)}
-			</div>
-		</section>
-	);
-};
-
-export default Contact;
+			export default Contact;
